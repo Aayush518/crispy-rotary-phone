@@ -12,6 +12,8 @@ function App() {
   const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isShuffleOn, setIsShuffleOn] = useState(false);
+  const [isRepeatOn, setIsRepeatOn] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -22,15 +24,35 @@ function App() {
     }
   }, [volume, isMuted]);
 
-  // Play/pause functionality
-  const handlePlayPause = () => {
+  // Handle initial load and song changes
+  useEffect(() => {
     if (audioRef.current) {
+      const audio = audioRef.current;
+      audio.src = songs[currentSongIndex].url;
+      audio.load();
       if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
+        audio.play().catch((error) => {
+          console.error('Failed to play:', error);
+          setIsPlaying(false);
+        });
       }
-      setIsPlaying(!isPlaying);
+    }
+  }, [currentSongIndex]);
+
+  // Play/pause functionality with error handling
+  const handlePlayPause = async () => {
+    if (audioRef.current) {
+      try {
+        if (isPlaying) {
+          audioRef.current.pause();
+        } else {
+          await audioRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+      } catch (error) {
+        console.error('Playback error:', error);
+        setIsPlaying(false);
+      }
     }
   };
 
@@ -55,9 +77,59 @@ function App() {
     setIsPlaying(true);
     if (audioRef.current) {
       audioRef.current.src = songs[index].url;
-      audioRef.current.play();
+      audioRef.current.play().catch((error) => {
+        console.error('Failed to play:', error);
+        setIsPlaying(false);
+      });
     }
   };
+
+  // Skip to the next song
+  const handleSkipNext = () => {
+    let nextIndex;
+    if (isShuffleOn) {
+      nextIndex = Math.floor(Math.random() * songs.length);
+    } else {
+      nextIndex = (currentSongIndex + 1) % songs.length;
+    }
+    handleSongChange(nextIndex);
+  };
+
+  // Skip to the previous song
+  const handleSkipPrevious = () => {
+    if (audioRef.current && audioRef.current.currentTime > 3) {
+      audioRef.current.currentTime = 0;
+      return;
+    }
+
+    let prevIndex;
+    if (isShuffleOn) {
+      prevIndex = Math.floor(Math.random() * songs.length);
+    } else {
+      prevIndex = currentSongIndex === 0 ? songs.length - 1 : currentSongIndex - 1;
+    }
+    handleSongChange(prevIndex);
+  };
+
+  // Handle song end (repeat or skip to next song)
+  const handleSongEnd = () => {
+    if (isRepeatOn) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+      }
+    } else {
+      handleSkipNext();
+    }
+  };
+
+  // Debug logs
+  console.log('Current song:', songs[currentSongIndex].url);
+  console.log('Playing:', isPlaying);
+  console.log('Volume:', volume);
+  console.log('Muted:', isMuted);
+  console.log('Current time:', currentTime);
+  console.log('Duration:', duration);
 
   return (
     <div className="min-h-screen bg-[#030712] overflow-hidden">
@@ -123,7 +195,12 @@ function App() {
         ref={audioRef}
         src={songs[currentSongIndex].url}
         onTimeUpdate={handleTimeUpdate}
-        onEnded={() => setIsPlaying(false)}
+        onEnded={handleSongEnd}
+        onLoadedMetadata={handleTimeUpdate}
+        onError={(e) => {
+          console.error('Audio error:', e);
+          setIsPlaying(false);
+        }}
       />
 
       {/* Audio Player */}
@@ -137,6 +214,12 @@ function App() {
         onMuteToggle={() => setIsMuted(!isMuted)}
         onVolumeChange={setVolume}
         onSeek={handleSeek}
+        onSkipNext={handleSkipNext}
+        onSkipPrevious={handleSkipPrevious}
+        isShuffleOn={isShuffleOn}
+        isRepeatOn={isRepeatOn}
+        onShuffleToggle={() => setIsShuffleOn(!isShuffleOn)}
+        onRepeatToggle={() => setIsRepeatOn(!isRepeatOn)}
         currentSong={songs[currentSongIndex]}
       />
     </div>

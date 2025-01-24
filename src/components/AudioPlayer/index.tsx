@@ -15,6 +15,12 @@ export function AudioPlayer({
   onMuteToggle,
   onVolumeChange,
   onSeek,
+  onSkipNext,
+  onSkipPrevious,
+  onShuffleToggle,
+  onRepeatToggle,
+  isShuffleOn,
+  isRepeatOn,
   currentSong,
 }: AudioPlayerProps) {
   return (
@@ -32,6 +38,12 @@ export function AudioPlayer({
           <Controls
             isPlaying={isPlaying}
             onPlayPause={onPlayPause}
+            onSkipNext={onSkipNext}
+            onSkipPrevious={onSkipPrevious}
+            isShuffleOn={isShuffleOn}
+            isRepeatOn={isRepeatOn}
+            onShuffleToggle={onShuffleToggle}
+            onRepeatToggle={onRepeatToggle}
           />
 
           <VolumeControl

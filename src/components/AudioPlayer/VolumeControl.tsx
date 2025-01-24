@@ -25,20 +25,20 @@ export function VolumeControl({
           <Volume2 className="w-4 h-4 md:w-5 md:h-5" />
         )}
       </button>
-      <div 
-        className="w-20 md:w-28 h-1.5 bg-white/5 rounded-full overflow-hidden group cursor-pointer relative"
-        onClick={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const percent = (e.clientX - rect.left) / rect.width;
-          onVolumeChange(percent);
-        }}
-      >
+      <div className="relative group">
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
+          className="w-20 md:w-28 h-1.5 bg-white/5 rounded-full cursor-pointer appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:opacity-0 [&::-webkit-slider-thumb]:group-hover:opacity-100 [&::-webkit-slider-thumb]:transition-opacity"
+        />
         <div 
-          className="h-full bg-gradient-to-r from-purple-500 to-blue-500 group-hover:from-purple-400 group-hover:to-blue-400 transition-all relative"
+          className="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full pointer-events-none"
           style={{ width: `${volume * 100}%` }}
-        >
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg" />
-        </div>
+        />
       </div>
     </div>
   );

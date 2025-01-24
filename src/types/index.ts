@@ -36,3 +36,21 @@ export interface SongCardProps {
   isActive: boolean;
   onClick: () => void;
 }
+export interface AudioPlayerProps {
+  isPlaying: boolean;
+  isMuted: boolean;
+  currentTime: number;
+  duration: number;
+  volume: number;
+  onPlayPause: () => void;
+  onMuteToggle: () => void;
+  onVolumeChange: (value: number) => void;
+  onSeek: (time: number) => void;
+  onSkipNext: () => void;
+  onSkipPrevious: () => void;
+  isShuffleOn: boolean;
+  isRepeatOn: boolean;
+  onShuffleToggle: () => void;
+  onRepeatToggle: () => void;
+  currentSong: Song;
+}
