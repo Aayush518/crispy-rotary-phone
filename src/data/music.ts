@@ -26,42 +26,42 @@ export const songs = [
     name: "Sunflower",
     img: "https://i.scdn.co/image/ab67616d00001e02e2e352d89826aef6dbd5ff8f",
     creator: "Post Malone, Swae Lee",
-    url: "Agora Hills.mp3",
+    url: "/audio/Sunflower - Spider-Man_ Into the Spider-Verse (1).mp3", // Ensure this file exists in public/audio
   },
   {
     name: "Agora Hills",
     img: "https://i.scdn.co/image/ab67616d00001e0294203dd82d27b494c777d07c",
     creator: "Doja Cat",
-    url: "Agora Hills.mp3",
+    url: "/audio/Agora Hills.mp3", // Ensure this file exists in public/audio
   },
   {
     name: "Paint The Town Red",
     img: "https://i.scdn.co/image/ab67616d00001e027acee948ecac8380c1b6ce30",
     creator: "Doja Cat",
-    url: "Paint The Town Red.mp3",
+    url: "/audio/Paint The Town Red.mp3", // Ensure this file exists in public/audio
   },
   {
     name: "I Wanna Be Yours",
     img: "https://i.scdn.co/image/ab67616d00001e024ae1c4c5c45aabe565499163",
     creator: "Arctic Monkeys",
-    url: "I Wanna Be Yours.mp3",
+    url: "/audio/I Wanna Be Yours.mp3", // Ensure this file exists in public/audio
   },
   {
     name: "Sweater Weather",
     img: "https://i.scdn.co/image/ab67616d00001e028265a736a1eb838ad5a0b921",
     creator: "The Neighbourhood",
-    url: "Sweater Weather.mp3",
+    url: "/audio/Sweater Weather.mp3", // Ensure this file exists in public/audio
   },
   {
     name: "All Girls Are The Same",
     img: "https://i.scdn.co/image/ab67616d00001e02f7db43292a6a99b21b51d5b4",
     creator: "juice WRLD",
-    url: "All Girls Are The Same.mp3",
+    url: "/audio/All Girls Are The Same.mp3", // Ensure this file exists in public/audio
   },
   {
     name: "SugarCrash!",
     img: "https://i.scdn.co/image/ab67616d00001e0266f688086d483cf5781942e0",
     creator: "ElyOtto",
-    url: "SugarCrash!.mp3",
+    url: "/audio/SugarCrash!.mp3", // Ensure this file exists in public/audio
   },
 ];

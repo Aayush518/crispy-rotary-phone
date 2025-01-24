@@ -12,15 +12,17 @@ function App() {
   const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  
+
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Set volume when the volume state changes
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume;
+      audioRef.current.volume = isMuted ? 0 : volume;
     }
-  }, [volume]);
+  }, [volume, isMuted]);
 
+  // Play/pause functionality
   const handlePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -32,6 +34,7 @@ function App() {
     }
   };
 
+  // Update current time and duration
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
@@ -39,9 +42,20 @@ function App() {
     }
   };
 
+  // Seek functionality
   const handleSeek = (time: number) => {
     if (audioRef.current) {
       audioRef.current.currentTime = time;
+    }
+  };
+
+  // Handle song change
+  const handleSongChange = (index: number) => {
+    setCurrentSongIndex(index);
+    setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.src = songs[index].url;
+      audioRef.current.play();
     }
   };
 
@@ -58,7 +72,7 @@ function App() {
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-8 pb-32">
           <Header />
-          
+
           {/* Featured Playlists */}
           <section className="mb-16">
             <div className="flex items-center justify-between mb-8">
@@ -95,10 +109,7 @@ function App() {
                     song={song}
                     isPlaying={isPlaying && currentSongIndex === index}
                     isActive={currentSongIndex === index}
-                    onClick={() => {
-                      setCurrentSongIndex(index);
-                      setIsPlaying(true);
-                    }}
+                    onClick={() => handleSongChange(index)}
                   />
                 ))}
               </div>
@@ -107,6 +118,7 @@ function App() {
         </div>
       </div>
 
+      {/* Audio Element */}
       <audio
         ref={audioRef}
         src={songs[currentSongIndex].url}
@@ -114,6 +126,7 @@ function App() {
         onEnded={() => setIsPlaying(false)}
       />
 
+      {/* Audio Player */}
       <AudioPlayer
         isPlaying={isPlaying}
         isMuted={isMuted}
